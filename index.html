@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Daven's Dialogue</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Free Template by Free-Template.co" />
+    <meta name="author" content="Free-Template.co" />
+
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:300,400,700,800|Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Bevan|Permanent+Marker|Rubik+Mono+One|Russo+One|Staatliches&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/aos.css">
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/jquery.timepicker.css">
+
+    <link rel="stylesheet" href="fonts/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="fonts/fontawesome/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" href="css/style.css">
+
+  </head>
+  <body class="bg-light">
+
+    <body data-spy="scroll" data-target="#ftco-navbar-spy" data-offset="0">
+
+    <div class="site-wrap">
+
+      <header class="site-header">
+        <div class="row align-items-center">
+          <div class="col-5 col-md-3">
+
+          </div>
+          <div class="col-2 col-md-6 text-center site-logo-wrap">
+            <a href="index.html" class="site-logo">D</a>
+          </div>
+        </div>
+
+      </header> <!-- site-header -->
+
+      <div class="main-wrap " id="section-home">
+
+        <div class="cover_1 overlay bg-slant-white bg-light">
+          <div class="img_bg" style="background-image: url(images/chip1.jpg);" data-stellar-background-ratio="0.5">
+            <div class="container">
+              <div class="row align-items-center justify-content-center text-center">
+                <div class="col-md-10" data-aos="fade-up">
+                  <h2 class="heading mb-5">Networking Challenges in the MeerKAT Radio Telescope</h2>
+                  <p class="sub-heading mb-5">Daven Mauff <br> 19 March 2020, 8 minute read</a></p>
+                  <p><a href="#section-body" class="smoothscroll btn btn-outline-white px-5 py-3">Read Blog</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div> <!-- .cover_1 -->
+
+        <div class="section pb-3 bg-white" id="section-body" data-aos="fade-up">
+          <div class="container">
+            <div class="row align-items-center justify-content-center">
+              <div class="col-md-12 col-lg-8 section-heading">
+                <h2 class="heading mb-5">Not your generic problems</h2>
+
+                <p>I’m almost certain that every person reading this at some stage has been at the <i>peril</i> of their whimsical Internet Service Providers; complaining and deadlocking our traffic because we’ve exceeded some superfluous number hidden in the fine-print, generally in the region of 100GB’s or so. MeerKAT <i>(Karoo Array Telescope)</i> exceeds this limit 237,000 daily. Doesn’t sound that big?</p>
+
+                <p>That’s over 23,760,000GB <i>daily</i>.</p>
+
+                <p>If the average size of a High Definition movie is around 4GB, that equates to the space of 5,940,000 movies <i>daily</i>. Let me rephrase, according to IMDB, that’s more movies (and series) ever produced in the history of mankind (actually since 1875), transferred - <i>DAILY</i>. And we’re not just talking about movie-count, this is actual size, as if all of the movies were placed on a server somewhere for everybody to watch - and this happens -  every day. </p>
+                  
+                <div style="width:100%;height:0;padding-bottom:75%;position:relative;">
+                    <iframe src="https://giphy.com/embed/voOhKPgzYsyPu" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+                  </div>
+
+
+                <p>Of course, I’m over-exaggerating slightly, because this is the actual raw voltage size, but the point is - it’s a lot of data. </p>
+              
+                <p>I found this talk particularly interesting, most of the conference was centered around system scalability and when (or when not) to make use of microservices or serverless architecture to tackle the ever-expanding problem <i>(see what I did there?)</i>. However, this section was dedicated to the actual transfer of data, what was going on under-the-hood. Essentially, it began a deep dive into the very core of what could be any architecture, and how it communicated.</p>
+
+                <p>Specifically, Bruce Merry, a senior software developer at MeerKAT attempted to aggregate specifically what the company needed, the possible ways of getting there and what problems (and solutions) they stumbled upon along the way. </p>
+                
+                <h2 class="heading mb-5"><i>Welcome to the deep-dive of a 648 port network switch.</i></h2>
+
+                <p>The first thing that comes to mind when one thinks of a 40GbE network switch - is how? <i>(I know right, me too)</i>. But there are actually multiple different ways of dealing with this, the first and most obvious, is a very very big switch. However, just looking at one of Cisco’s 22kW racks, that still only sports around 576 x 40Gb/s ports, a little shy of our 648 goal; and that’s not to mention the power consumption of 22kW, ouch. This isn’t feasible and so leads me to our next solution, a tree of switches. Although this may solve the existing power consumption problem, it has its own waves of complexity, for instance when you experience data-collision on nodes set to duplex modes resulting in bridging loops <i>(crazy when that happens hey?)</i> Ideally, data-transmission on a 32,000 band network is also just not going to cut it. Leading me to the last and current solution, a large cluster of lots of little switches. This is understood as a very dense network structure, with more than half the costs attributed to the actual wiring - but at least we have our solution. Next, let’s understand how this is possible and some of the ways to go about it.</p>
+
+                <p>It’s called multicasting, a type of publish and subscribe method but within the network layer, allowing the switches themselves to distribute the data. This allows multiple consumers access to the stream without having to replicate the data. It also has its advantages when it comes to debugging, by easily attaching another consumer, all data can be recorded and analyzed on the fly. The technology is actually from the 90’s, and is very similar to a service discovery where the sender and receiver don’t really know about each other. There are a couple of downsides though, but ones that actually suit MeerKAT <i>(go figure)</i>. </p>
+
+                <p>Firstly, multicasting may only make use of UDP as opposed to it’s TCP/IP brothers - all this means is that the data transmission is lossy, but according to MeerKAT, that’s fine. The data they’re receiving is real time, and ideally you can’t exactly ask the photons to stop transmitting while you quickly go reconstruct something. They’ll keep arriving whether you like it or not. Moreover, most of the data is noise in any case, so losing some of it generally won’t matter. The next problems have everything to do with optimizations and configuration difficulty, but let’s address them in parts.</p>
+
+                <h4 class="heading">The Buffering of Switches </h4>
+
+                <p>For the most part, in multicasts, buffering is done on the incoming node, and so this runs the risk that if switches have over-subscribed (having a switch subscribed to 2 x 30 Gb/s stream on a 40Gb/s line), it’ll trickle down to everything the switches push data too. Meaning that nodes which are connected can lose almost entire data subscriptions without even knowing it. This in-fact leads to the next problem. How does one actually pick this up <i>(apparently it’s not as easy as just noticing that a ¼ of 23,760,000 daily GB’s are gone)?</i></p>
+
+                <h4 class="heading">Monitoring</h4>
+
+                <p>MeerKAT used to make use of an enterprise solution called Observium. Essentially, this provides a visualization of network traffic through graphs, and can easily show a dip in even the slightest of packet losses. <i>Great, right?</i> Not exactly. The problem with software is it made things difficult to gain a higher-level understanding of what was actually going on; meaning you’d need to know exactly which node and which stream was faulty to see the packet loss - you couldn’t just get an overview of everything that was happening on the vast array of switches/nodes. <i>Fear not</i>, as MeerKAT designed their own software for doing just that. They could now visualize both the leak and spine switches, understanding exactly how many packets were being discarded. Although, this only allowed them to detect faults while they were happening, and so a simple plugin called Prometheus allowed them to store all this data. Solving the over-subscription problem with a robust monitoring system. </p>
+
+                <h4 class="heading">Next, let's take a look at speed.</h4>
+
+                <p>To understand this specifically, we also delve into power management and optimization, but let’s begin with hosts. The big question still remains, how do you receive at around 40Gb/s (the size of the actual archived data that they’d like to store) and <s>keep</s> receiving at this rate indefinitely whilst keeping packet loss to a minimum (remember it’s already reduced by opting to use UDP). Something to note, without any optimizations, the stream can operate reliably with very minimal packet loss at around 6.3Gb/s, keep that number in mind as we work our way down the optimization’s list, till we get to our desired 40Gb/s. The first thing that we do is turn off dynamic frequency scaling, it’s a simple optimization tweak and puts us at about 6.6Gb/s. Next, we turn off C-States, this is what allows the CPU to sleep during clock cycles (it’s understood that keeping this to C1 will still allow some sleep and deliver the best performance). We’re now sitting at 10.4Gb/s. Next, we can tweak the adaptive interrupt moderation. This can be done on the Network Interface Card (NIC) itself by turning down the rate of interrupts. This is still okay for MeerKAT because they are not latency sensitive. Leaving us at 11.6Gb/s.</p>
+
+                <p><i>(I know this is a lot but just bare with me.)</i></p>
+
+                <p><i>Next</i>, is to do away with an optimization technique called instruction mixing. This draws so much power that your CPU will actually clock-down meaning that everything it’s doing will also slow down - not something we want. Socket buffer size is the next thing that plays a role, skipping the whole mathematical part, by increasing the size to 8MB you can step the transfer up to around 19Gb/s. But be careful, you don’t want to increase this too much, because after a certain size, it won’t fit into L3 cache, meaning the network will be using slower storage to process your requests. <i>Another thing to do away with</i>, is IP tables. Their rules have noticeable costs, and even if they’re loaded with no rules, there's still costs. This is because of a small module called <i>nf_countrack</i> which records all stateful connections. However, this may cause a problem because Docker uses IP tables and so you’ll have to switch it to use Hostnet. </p>
+
+                <p>The last four things do the last little push in achieving the threshold of 40Gb/s. But for the sake of sanity, I’m just going to list them. <i>Do not</i> make use of Non-Uniform Memory Access, Scale on the receiving side for the most CPU optimizations, make use of the kernel bypass and Libvma transparent wrappers, and lastly remember your NIC’s limitations and switch to ConnectX-5 otherwise everything will most likely break. And there you have it - how to make a fully optimized high-speed radio telescope communication grid, let me know in the comments if anybody got it right. </p>
+
+
+                <div style="width:100%;height:0;padding-bottom:120%;position:relative;"><iframe src="https://giphy.com/embed/LyJ6KPlrFdKnK" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
+
+                <p>P.S. I figured as a Grad on bench I could use the opportunity to refine some of my JavaScript skill, hence giving me the idea to host it like this. I hope you enjoyed it.</p>
+
+               
+
+                <hr>
+
+                <h2 class="heading mb-5" style="text-align: center">Want to know more?</h2>
+
+                <p>
+                  Want to know more about <a href="https://en.wikipedia.org/wiki/MeerKAT">MeerKAT</a>? <br>
+                  Want to know more about <a href="https://scaleconf.org/">ScaleConf</a>? <br>
+                  Want to know more about <a href="https://github.com/bmerry">Speaker</a>? <br>
+                </p>
+
+                  <p>
+                    Pop me a &#128077; if you got this far, I'd love your feedback!
+                  </p>
+
+              
+
+
+
+              </div>
+            </div>
+          </div>
+        </div> <!-- .section -->
+
+
+        <footer class="ftco-footer"></footer>
+
+    </div>
+
+    <!-- loader -->
+    <div id="loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#ff7a5c"/></svg></div>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery-migrate-3.0.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+
+    <script src="js/bootstrap-datepicker.js"></script>
+    <script src="js/jquery.timepicker.min.js"></script>
+    <script src="js/jquery.stellar.min.js"></script>
+
+    <script src="js/jquery.easing.1.3.js"></script>
+
+    <script src="js/aos.js"></script>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
